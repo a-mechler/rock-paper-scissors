@@ -9,47 +9,47 @@ function compSelect(){
     }
 }
 
-function playRound(playerPlay, compPlay){
-    if (playerPlay === 'rock' & compPlay === 'scissors') return 2;
-    else if (playerPlay === 'rock' & compPlay === 'paper') return 0;
-    else if (playerPlay === 'paper' & compPlay === 'rock') return 2;
-    else if (playerPlay === 'paper' & compPlay === 'scissors') return 0;
-    else if (playerPlay === 'scissors' & compPlay === 'paper') return 2;
-    else if (playerPlay === 'scissors' & compPlay === 'rock') return 0;
-    else return 1;
+function reset(){
+    win.textContent = 0;
+    lose.textContent = 0;
+    tie.textContent = 0;
 }
 
-function game(){
-    let wins = 0;
-    let loses = 0;
-    let ties = 0;
-    for (let i = 0; i < 5; i++){
-        let playerSelect = prompt('rock paper scissors').toLowerCase();
-        if (playerSelect != 'rock' & playerSelect != 'paper' & playerSelect != 'scissors'){
-            console.log('please enter rock, paper, or scissors');
-            i--;
-            continue;
-        }
-        let compSelection = compSelect();
-        let result = playRound(playerSelect, compSelection);
-        if (result === 2){
-            console.log(`You win! ${playerSelect} beats ${compSelection}`);
-            wins++;
-        } else if (result === 0){
-            console.log(`You lose! ${compSelection} beats ${playerSelect}`);
-            loses++;
-        } else if (result === 1){
-            console.log(`Tie! ${playerSelect} ties ${compSelection}`);
-            ties++;
-        }
-    }  
-    if (wins > loses){
-        console.log(`You win! ${wins} wins, ${loses} loses, ${ties} ties`)
-    }  else if (loses > wins){
-        console.log(`You lose! ${wins} wins, ${loses} loses, ${ties} ties`)
-    } else{
-        console.log(`Tie! ${wins} wins, ${loses} loses, ${ties} ties`)
+function decider() {
+    if (parseInt(win.textContent) >= 5){
+        alert('YOU WIN!');
+        reset();
+    } else if (parseInt(lose.textContent) >= 5){
+        alert('YOU LOSE!');
+        reset();
     }
 }
 
-game();
+function playRound(e){
+    playerPlay = e.srcElement.id;
+    compPlay = compSelect();
+    if ((playerPlay === 'rock' & compPlay === 'scissors') || 
+        (playerPlay === 'paper' & compPlay === 'rock') || 
+        (playerPlay === 'scissors' & compPlay === 'paper')) {
+            win.textContent = parseInt(win.textContent) + 1;  
+    }      
+    else if ((playerPlay === 'rock' & compPlay === 'paper') ||
+        (playerPlay === 'paper' & compPlay === 'scissors') ||
+        (playerPlay === 'scissors' & compPlay === 'rock')) {
+            lose.textContent = parseInt(lose.textContent) + 1;
+    }
+    else tie.textContent = parseInt(tie.textContent) + 1;
+
+    decider();
+}
+
+
+const win = document.querySelector('#win');
+const tie = document.querySelector('#tie');
+const lose = document.querySelector('#lose');
+const btns = document.querySelectorAll('.btn');
+btns.forEach(btn => btn.addEventListener('click', playRound));
+
+
+
+
